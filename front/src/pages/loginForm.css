@@ -1,0 +1,92 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom right, #e8f5e9, #d0f0df);
+  min-height: 100vh;
+}
+
+.login-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 50px;
+  background: linear-gradient(to bottom, #1e293b, #334155, #475569);
+  /*background-image: url('/public/images/bg3.png');*/ /* facultatif : éléments déco */
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+}
+
+.login-header {
+  text-align: center;
+  color: #444;
+  margin-bottom: 20px;
+}
+
+.proxym-logo {
+  width: 400px;
+  margin-bottom: 10px;
+}
+
+.login-box {
+  background-color: white;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.login-box h2 {
+  margin: 10px 0;
+  font-size: 24px;
+}
+
+.login-box p {
+  color: #777;
+  margin-bottom: 20px;
+}
+
+.login-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.login-box input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.login-box button {
+  padding: 12px;
+  background-color: #4a44a0;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+label{
+    position: relative;
+    text-align: left;   
+}
+.login-box button:hover {
+  background-color: #151052;
+}
+
+.login-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.login-footer a {
+  text-decoration: none;
+  color: #151052;
+}

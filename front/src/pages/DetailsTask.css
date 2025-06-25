@@ -1,0 +1,117 @@
+.detail-task {
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9fb;
+}
+
+.task-header {
+  margin-bottom: 20px;
+}
+
+.task-header h2 {
+  font-size: 24px;
+  color: #222;
+}
+
+.task-info {
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+  color: #4a4a4a;
+}
+
+.task-meta {
+  display: flex;
+  gap: 15px;
+  font-size: 14px;
+  color: #777;
+  margin-top: 5px;
+}
+
+.task-body {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.task-description,
+.task-tech {
+  flex: 1 1 48%;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.task-description h3,
+.task-tech h3,
+.task-file-section h3,
+.task-status h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.task-description p,
+.task-tech ul {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #444;
+}
+
+.task-tech ul {
+  list-style: disc inside;
+  padding-left: 10px;
+}
+
+.task-file-section {
+  flex: 1 1 48%;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.file-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 10px;
+  color: #666;
+}
+
+.upload-box {
+  border: 2px dashed #ccc;
+  padding: 40px;
+  text-align: center;
+  border-radius: 10px;
+  background-color: #f2f2f2;
+  margin-bottom: 20px;
+  color: #999;
+}
+
+.submit-btn {
+  background-color: #546fff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.task-status {
+  flex: 1 1 48%;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.status-box {
+  border: 1px solid #ccc;
+  padding: 40px;
+  border-radius: 10px;
+  text-align: center;
+  color: #aaa;
+}
