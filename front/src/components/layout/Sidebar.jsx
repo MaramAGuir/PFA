@@ -16,7 +16,7 @@ function Sidebar({ onLogoutClick }) {
           Proxym IT
         </h2>
         <nav>
-          <NavLink to="/" className="sidebar-item" end>
+          <NavLink to="/dashboard" className="sidebar-item" end>
             <img src={dashboard} alt="dashboard" className="icon" />
             <span>Dashboard</span>
           </NavLink>
