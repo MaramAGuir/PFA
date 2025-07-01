@@ -13,6 +13,8 @@ body {
   padding-top: 50px;
   background: linear-gradient(to bottom, #1e293b, #334155, #475569);
   /*background-image: url('/public/images/bg3.png');*/ /* facultatif : éléments déco */
+  /*background-image: url('/public/images/bg3.png');/ 
+  /* facultatif : éléments déco */
   background-size: cover;
   background-position: center;
   min-height: 100vh;

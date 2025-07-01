@@ -129,7 +129,7 @@ body {
   overflow-y: auto;
   background-color: #f8fafc;
 }
-/*drop-down menu */
+/* drop-down menu */
 .icon-wrapper {
   position: relative;
 }
@@ -158,6 +158,7 @@ body {
 .dropdown-menu p:hover {
   background-color: #f1f5f9;
 }
+
 .dropdown-btn {
   width: 100%;
   text-align: left;
@@ -172,6 +173,29 @@ body {
 
 .dropdown-btn:hover {
   background-color: #f1f5f9;
+}
+
+.dropdown-user-info {
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.dropdown-user-info strong {
+  color: #1e293b;
+  display: block;
+  font-size: 15px;
+}
+
+.dropdown-user-info small {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.dropdown-menu hr {
+  border: none;
+  height: 1px;
+  background-color: #e2e8f0;
+  margin: 8px 0;
 }
 
 /*modale logout*/
@@ -196,6 +220,17 @@ body {
   width: 360px;
   text-align: center;
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  animation: appear 0.2s ease-out;
+}
+@keyframes appear {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .modal h3 {

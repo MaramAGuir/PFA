@@ -11,22 +11,20 @@ function Header({ onLogoutClick }) {
   const notifRef = useRef(null);
   const navigate = useNavigate();
 
+  const user = {
+    name: "Maram Aguir",
+    role: "Chef de projet"
+  };
+
   useEffect(() => {
     function handleClickOutside(event) {
-      if (
-        profileRef.current &&
-        !profileRef.current.contains(event.target)
-      ) {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
         setShowProfileMenu(false);
       }
-      if (
-        notifRef.current &&
-        !notifRef.current.contains(event.target)
-      ) {
+      if (notifRef.current && !notifRef.current.contains(event.target)) {
         setShowNotifMenu(false);
       }
     }
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
@@ -48,9 +46,9 @@ function Header({ onLogoutClick }) {
         />
         {showNotifMenu && (
           <div className="dropdown-menu">
-            <p>🔔 3 nouvelles notifications</p>
-            <p>📅 Tâche urgente aujourd’hui</p>
-            <p>✅ Mission terminée</p>
+            <p>🔔 Nouvelle tâche ajoutée</p>
+            <p>📅 Échéance demain</p>
+            <p>✅ Tâche validée</p>
           </div>
         )}
       </div>
@@ -68,20 +66,25 @@ function Header({ onLogoutClick }) {
         />
         {showProfileMenu && (
           <div className="dropdown-menu">
+            <div className="dropdown-user-info">
+              <strong>{user.name}</strong>
+              <small>{user.role}</small>
+            </div>
+            <hr />
             <button
-              className="dropdown-btn"
+              className="dropdown-btn view-profile"
               onClick={() => {
                 setShowProfileMenu(false);
                 navigate("/profile");
               }}
             >
-              👁️ View Details
+              👁️ View Profile
             </button>
             <button
-              className="dropdown-btn"
+              className="dropdown-btn logout-btn"
               onClick={() => {
                 setShowProfileMenu(false);
-                onLogoutClick(); // 🔁 appelle la modale logout
+                onLogoutClick(); // ✅ appelle la modale logout correctement
               }}
             >
               🚪 Logout

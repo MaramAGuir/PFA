@@ -1,65 +1,87 @@
-import "./Dashboard.css";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import "./tasks.css";
+import CreateTaskModal from "./CreateTask";
 
 function Tasks() {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // ✅ correct usage
 
-  const projectForm = (e) => {
-    e.preventDefault();
-    navigate('/CreateProjectModal'); // Redirection
+  const [showModal, setShowModal] = useState(false);
+
+  const [tasks, setTasks] = useState([
+    {
+      collaborator: "John Doe",
+      description: "Fix login bug on Safari",
+      progress: 90,
+      status: "En cours",
+      title: "Debug Auth",
+      startDate: "2025-07-01",
+      endDate: "2025-07-05",
+    },
+    {
+      collaborator: "Sarah Smith",
+      description: "Refactor UI components",
+      progress: 85,
+      status: "En révision",
+      title: "UI Refactor",
+      startDate: "2025-07-03",
+      endDate: "2025-07-08",
+    },
+  ]);
+
+  const addTask = (newTask) => {
+    setTasks((prev) => [...prev, newTask]);
   };
 
-  const projects = [
-    {
-      id: 1,
-      name: "Plateforme RH",
-      description: "Application de gestion des employés",
-      progress: 70,
-      deadline: "2025-08-01",
-    },
-    {
-      id: 2,
-      name: "Refonte site web",
-      description: "Refonte complète du site public",
-      progress: 45,
-      deadline: "2025-06-28",
-    },
-  ];
-
-  const isChefProjet = true;
-
   return (
-    <div className="dashboard">
+    <div className="tasks-page">
+      <div className="tasks-header">
+        <h2>Nom du Projet</h2>
+        <button className="btn-add-task" onClick={() => setShowModal(true)}>
+          + Ajouter une tâche
+        </button>
+      </div>
 
-      {/* Bouton ajouter projet */}
-      {isChefProjet && (
-        <div className="add-project-section">
-          <button className="btn-add-project" onClick={projectForm}>
-            + Ajouter un projet
-          </button>
-        </div>
-      )}
-
-      {/* Liste de projets */}
-      <div className="project-grid">
-        {projects.map((project) => (
+      <div className="task-grid">
+        {tasks.map((task, index) => (
           <div
-            key={project.id}
-            className="project-card"
-            onClick={() => navigate(`/project/${project.id}`)}
+            key={index}
+            className="task-card"
+            onClick={() => navigate(`/DetailsTask/${index}`)} // Redirection
           >
-            <h3>{project.name}</h3>
-            <p>{project.description}</p>
-            <div className="progress-bar">
-              <div
-                className="progress-fill"
-                style={{ width: `${project.progress}%` }}
-              ></div>
+            <div className="task-header">
+              <div>
+                <h4>{task.title}</h4>
+                <p className="collaborator">{task.collaborator}</p>
+              </div>
+              <span className="status">{task.status}</span>
             </div>
-            <p className="deadline">📅 Échéance : {project.deadline}</p>
+            <p className="description">{task.description}</p>
+
+            <div className="progress-section">
+              <label>Progress</label>
+              <div className="progress-bar">
+                <div
+                  className="progress-fill"
+                  style={{ width: `${task.progress}%` }}
+                ></div>
+              </div>
+              <span className="percent">{task.progress}%</span>
+            </div>
+
+            <div className="footer">
+              <p className="deadline">🕒 {task.endDate}</p>
+            </div>
           </div>
         ))}
       </div>
+
+      {showModal && (
+        <CreateTaskModal
+          onClose={() => setShowModal(false)}
+          onAddTask={addTask}
+        />
+      )}
     </div>
   );
 }

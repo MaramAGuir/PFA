@@ -11,14 +11,14 @@ function Layout() {
 
   const handleLogout = () => {
     setShowLogoutModal(false);
-    navigate("/"); // ou vers "/login" si tu as une page d’accueil
+    navigate("/login"); // ou vers "/login" si tu as une page d’accueil
   };
 
   return (
     <div className="layout">
       <Sidebar onLogoutClick={() => setShowLogoutModal(true)} />
       <div className="layout-content">
-        <Header />
+        <Header onLogoutClick={() => setShowLogoutModal(true)} />
         <main className="layout-main">
           <Outlet />
           {showLogoutModal && (

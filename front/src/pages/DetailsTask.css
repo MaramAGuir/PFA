@@ -1,117 +1,200 @@
 .detail-task {
-  padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f9f9fb;
+  display: flex;
+  gap: 20px;
+  padding: 30px;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f9f9ff;
 }
 
+/* Conteneur gauche (infos principales) */
+.task-left {
+  flex: 2;
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header avec titre, infos, meta */
 .task-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Tout aligné à gauche */
   margin-bottom: 20px;
 }
 
 .task-header h2 {
-  font-size: 24px;
-  color: #222;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1e1e2f;
+  margin-bottom: 10px;
+  text-align: left !important;
+  align-self: flex-start;
+  margin-left: 0;
 }
 
+/* Task info : nom catégorie + lien mentors */
 .task-info {
-  display: flex;
-  gap: 10px;
-  margin-top: 5px;
-  color: #4a4a4a;
-}
-
-.task-meta {
+  font-size: 14px;
+  color: #555;
   display: flex;
   gap: 15px;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* Alignement à gauche */
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+.get-mentors {
+  color: #409eff;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Meta infos collaborateurs et deadline */
+.task-meta {
   font-size: 14px;
   color: #777;
-  margin-top: 5px;
-}
-
-.task-body {
   display: flex;
-  gap: 30px;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 5px;
+  align-items: flex-start; /* Alignement à gauche */
+  width: 100%;
 }
 
-.task-description,
+/* Description */
+.task-description {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.5;
+  margin-bottom: 15px; /* Espace sous description */
+}
+
+.task-description h3 {
+  font-size: 16px;
+  margin-bottom: 8px;
+  font-weight: 600;
+  text-align: left;
+}
+
+/* Technologie / Highlights */
 .task-tech {
-  flex: 1 1 48%;
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-}
-
-.task-description h3,
-.task-tech h3,
-.task-file-section h3,
-.task-status h3 {
-  font-size: 18px;
-  margin-bottom: 10px;
+  font-size: 14px;
   color: #333;
 }
 
-.task-description p,
-.task-tech ul {
-  font-size: 14px;
-  line-height: 1.6;
-  color: #444;
+.task-tech h3 {
+  font-size: 16px;
+  margin-bottom: 8px;
+  font-weight: 600;
+  text-align: left;
 }
 
 .task-tech ul {
-  list-style: disc inside;
-  padding-left: 10px;
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
 }
 
-.task-file-section {
-  flex: 1 1 48%;
-  background-color: #fff;
-  padding: 20px;
+.task-tech li {
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.check-icon {
+  color: #409eff;
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+/* Conteneur droit (statut, note, fichiers) */
+.task-right {
+  flex: 1;
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* Statut */
+.task-status {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task-status h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  text-align: left;
+}
+
+.status-select {
+  padding: 8px;
   border-radius: 10px;
-  margin-top: 20px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+/* Note */
+.note-input {
+  border: 1px solid #ddd;
+  padding: 10px;
+  height: 100px;
+  border-radius: 12px;
+  resize: none;
+  font-size: 14px;
+}
+
+/* Fichier */
+.task-file-section h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-align: left;
 }
 
 .file-meta {
   display: flex;
   justify-content: space-between;
   font-size: 13px;
+  color: #888;
   margin-bottom: 10px;
-  color: #666;
 }
 
 .upload-box {
-  border: 2px dashed #ccc;
-  padding: 40px;
+  border: 2px dashed #bbb;
+  padding: 25px;
   text-align: center;
   border-radius: 10px;
-  background-color: #f2f2f2;
-  margin-bottom: 20px;
-  color: #999;
+  background: #f0f4ff;
+  font-size: 14px;
+  color: #444;
+  cursor: pointer;
 }
 
+/* Bouton Submit */
 .submit-btn {
-  background-color: #546fff;
+  width: 100%;
+  padding: 10px;
+  margin-top: 15px;
+  background-color: #3366ff;
   color: white;
-  padding: 10px 20px;
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 600;
+  transition: background 0.3s ease;
 }
 
-.task-status {
-  flex: 1 1 48%;
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  margin-top: 20px;
-}
-
-.status-box {
-  border: 1px solid #ccc;
-  padding: 40px;
-  border-radius: 10px;
-  text-align: center;
-  color: #aaa;
+.submit-btn:hover {
+  background-color: #254edb;
 }
