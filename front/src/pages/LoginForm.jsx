@@ -1,21 +1,45 @@
 import './loginForm.css';
-import { useNavigate, Link } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import logo from './images/logo.jpg';
-
-
 
 function LoginForm() {
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
 
-    // 🔐 Authentification à ajouter ici (backend)
-   navigate("/dashboard"); 
-  };
+  const handleLogin = async (e) => {
+  e.preventDefault();
+
+  try {
+    const res = await fetch("http://localhost:5000/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+      setErrorMsg(error.message || "Erreur de connexion");
+      return;
+    }
+
+    const user = await res.json();
+    localStorage.setItem("user", JSON.stringify(user));
+
+    // ✅ Redirige TOUJOURS vers dashboard
+    navigate("/dashboard");
+
+  } catch (err) {
+    setErrorMsg("Erreur de connexion au serveur");
+    console.error(err);
+  }
+};
+
 
   return (
-    
     <div className="login-page">
       <div className="login-header">
         <img src={logo} alt="Proxym Logo" className="proxym-logo" />
@@ -25,23 +49,19 @@ function LoginForm() {
         <h2>Welcome !</h2>
         <p>Enter your credentials to access your Project Hub.</p>
 
+        {errorMsg && <p style={{ color: 'red', fontSize: '14px' }}>{errorMsg}</p>}
+
         <form onSubmit={handleLogin}>
           <label htmlFor="email">Your Email</label>
-          <input id="email" name="email" type="email" placeholder="your.email@example.com" required />
+          <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
 
           <label htmlFor="password">Your Password</label>
-          <input id="password" name="password" type="password" placeholder="Password" required />
+          <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
 
           <button type="submit">Login</button>
         </form>
-
-        <div className="login-footer">
-          <Link to="/forgot-password">Forgot Password?</Link>
-          <Link to="/signup">Create Account</Link>
-        </div>
       </div>
     </div>
-    
   );
 }
 

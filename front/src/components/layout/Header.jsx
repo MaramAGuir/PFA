@@ -11,10 +11,7 @@ function Header({ onLogoutClick }) {
   const notifRef = useRef(null);
   const navigate = useNavigate();
 
-  const user = {
-    name: "Maram Aguir",
-    role: "Chef de projet"
-  };
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -78,7 +75,7 @@ function Header({ onLogoutClick }) {
                 navigate("/profile");
               }}
             >
-              👁️ View Profile
+              View Profile
             </button>
             <button
               className="dropdown-btn logout-btn"
@@ -87,7 +84,7 @@ function Header({ onLogoutClick }) {
                 onLogoutClick(); // ✅ appelle la modale logout correctement
               }}
             >
-              🚪 Logout
+              Logout
             </button>
           </div>
         )}

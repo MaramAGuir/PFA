@@ -1,7 +1,10 @@
 import "./CreateProjectModal.css";
 import { useState } from "react";
 
-function CreateProjectModal({ onClose }) {
+
+
+function CreateProjectModal({ onClose, onProjectAdded }) {
+
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -9,7 +12,6 @@ function CreateProjectModal({ onClose }) {
     endDate: "",
     teamLead: "",
     teamMembers: "",
-    priority: "medium",
   });
 
   const handleChange = (e) => {
@@ -17,36 +19,49 @@ function CreateProjectModal({ onClose }) {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    const today = new Date(); // aujourd’hui
-    today.setHours(0, 0, 0, 0); // ignore l'heure pour comparaison simple
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const start = new Date(formData.startDate);
+  const end = new Date(formData.endDate);
+  
+  if (start < today) {
+    alert("🚫 La date de début ne peut pas être dans le passé !");
+    return;
+  }
 
-    const start = new Date(formData.startDate);
-    const end = new Date(formData.endDate);
+  if (end <= start) {
+    alert("🚫 La date de fin doit être postérieure à la date de début !");
+    return;
+  }
 
-    if (start < today) {
-      alert("🚫 La date de début ne peut pas être dans le passé !");
-      return;
+  if (parseInt(formData.teamMembers) <= 0) {
+    alert("🚫 Le nombre de membres doit être supérieur à 0 !");
+    return;
+  }
+
+  try {
+    const res = await fetch("http://localhost:5000/api/projects", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    if (res.ok) {
+    const data = await res.json();
+    console.log("✅ Projet enregistré :", data);
+    onProjectAdded(); // recharge la liste
+    onClose();         // ferme la modale
     }
+  } catch (err) {
+    console.error("Erreur réseau :", err);
+    alert("Erreur de connexion au serveur.");
+  }
+};
 
-    if (end <= start) {
-      alert("🚫 La date de fin doit être postérieure à la date de début !");
-      return;
-    }
-
-    console.log(" Projet valide :", formData);
-    onClose();
-
-    if (parseInt(formData.teamMembers) <= 0) {
-      alert(" Le nombre de membres doit être supérieur à 0 !");
-      return;
-    }
-
-    console.log("✅ Project data:", formData);
-    onClose();
-  };
 
   return (
     <div className="modal-overlay">
