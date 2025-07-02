@@ -13,7 +13,6 @@ function Sidebar({ onLogoutClick }) {
       <div>
         <h2 className="sidebar-title">
           <img src={logo} alt="Logo" className="logo-icon" />
-          Proxym IT
         </h2>
         <nav>
           <NavLink to="/dashboard" className="sidebar-item" end>
