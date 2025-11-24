@@ -172,6 +172,7 @@ function CreateProjectModal({ onClose, onProjectCreated }) {
 
     const start = new Date(formData.startDate);
     const end = new Date(formData.endDate);
+    const teamMembersNum = parseInt(formData.teamMembers);
 
     if (start < today) {
       alert("🚫 Start date cannot be in the past!");
@@ -183,24 +184,30 @@ function CreateProjectModal({ onClose, onProjectCreated }) {
       return;
     }
 
-    if (parseInt(formData.teamMembers) <= 0 || isNaN(formData.teamMembers)) {
+    if (isNaN(teamMembersNum) || teamMembersNum <= 0) {
       alert("🚫 The number of team members must be greater than 0!");
       return;
     }
 
-    try {
-      const res = await axios.post("http://localhost:5000/api/projects", {
-        ...formData,
-        progress: 0,
-        deadline: formData.endDate,
-      });
+    const payload = {
+      ...formData,
+      teamMembers: teamMembersNum,
+      progress: 0,
+      deadline: formData.endDate,
+    };
 
+    try {
+      console.log("📤 Envoi des données projet :", payload);
+
+      const res = await axios.post("http://localhost:5000/api/projects", payload);
+
+      console.log("✅ Projet enregistré :", res.data);
       alert("✅ Projet créé avec succès !");
       onProjectCreated(res.data);
       onClose();
     } catch (error) {
-      console.error(error);
-      alert("Erreur lors de la création du projet.");
+      console.error("❌ Erreur lors de la création du projet :", error);
+      alert("❌ Erreur lors de la création du projet. Consulte la console.");
     }
   };
 
@@ -275,6 +282,7 @@ function CreateProjectModal({ onClose, onProjectCreated }) {
             value={formData.teamMembers}
             onChange={handleChange}
             required
+            min={1}
           />
 
           <label>Priority</label>
@@ -303,4 +311,3 @@ function CreateProjectModal({ onClose, onProjectCreated }) {
 }
 
 export default CreateProjectModal;
-

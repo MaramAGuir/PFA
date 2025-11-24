@@ -1,6 +1,6 @@
 import './loginForm.css';
-import { Link, useNavigate } from "react-router-dom";
-import logo from '../assets/logo.png'; // Ton logo Proxym
+import { useNavigate, Link } from 'react-router-dom';
+import logo from '../assets/logo.png';
 
 
 

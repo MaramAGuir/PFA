@@ -67,7 +67,9 @@ function App() {
           <Route path="/CreateProjectModal" element={<CreateProjectModal />} />
           <Route path="/DetailsTask" element={<DetailsTask />} />
           <Route path="/tasks" element={<Tasks />} />
-          <Route path="/DetailsTask/:id" element={<DetailsTask />} />
+          <Route path="/projects/:projectId/tasks" element={<Tasks />} />
+          <Route path="/DetailsTask/:taskId" element={<DetailsTask />} />
+
 
 
         </Route>

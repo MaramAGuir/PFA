@@ -45,7 +45,6 @@ app.listen(PORT, () => {
   console.log(`✅ Server running on http://localhost:${PORT}`);
 });*/
 
-
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -53,16 +52,14 @@ const path = require('path');
 
 const app = express();
 
+// CORS : autorise toutes les origines (en dev uniquement)
 app.use(cors());
+
 app.use(express.json());
 
-// Connexion à MongoDB
-mongoose.connect('mongodb://localhost:27017/projectdb', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const PORT = 5000;
 
-// 📁 Schéma Project
+// SCHÉMAS
 const projectSchema = new mongoose.Schema({
   name: String,
   description: String,
@@ -76,7 +73,6 @@ const projectSchema = new mongoose.Schema({
 });
 const Project = mongoose.model('Project', projectSchema);
 
-// 📁 Schéma Task
 const taskSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
@@ -87,19 +83,33 @@ const taskSchema = new mongoose.Schema({
   status: { type: String, default: "To Do", enum: ["To Do", "In Progress", "Done"] },
   highlights: { type: String, default: "" },
   progress: { type: Number, default: 0, min: 0, max: 100 },
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
+  projectId: { type: mongoose.Schema.Types.ObjectId, ref: 'Project', required: true },
 });
 const Task = mongoose.model('Task', taskSchema);
 
-//
-// ─── ROUTES PROJETS ─────────────────────────────────────────────
-//
+// ROUTES API
+
 app.get('/api/projects', async (req, res) => {
   try {
     const projects = await Project.find();
     res.json(projects);
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/projects/:projectId', async (req, res) => {
+  const { projectId } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(projectId)) {
+    return res.status(400).json({ error: "ID de projet invalide" });
+  }
+  try {
+    const project = await Project.findById(projectId);
+    if (!project) return res.status(404).json({ error: "Projet non trouvé" });
+    res.json(project);
+  } catch (err) {
+    res.status(500).json({ error: "Erreur serveur" });
   }
 });
 
@@ -113,35 +123,47 @@ app.post('/api/projects', async (req, res) => {
   }
 });
 
-//
-// ─── ROUTES TÂCHES ─────────────────────────────────────────────
-//
-app.get('/api/tasks', async (req, res) => {
+// Dans ton backend, par exemple server.js ou routes/projects.js
+
+app.get('/api/projects/:id/teamMembers', async (req, res) => {
   try {
-    const tasks = await Task.find().sort({ createdAt: -1 });
-    res.json(tasks);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    const projectId = req.params.id;
+    const project = await Project.findById(projectId).populate('teamMembers', 'name email'); // populate selon ta config
+
+    if (!project) {
+      return res.status(404).json({ message: "Projet non trouvé" });
+    }
+
+    res.json(project.teamMembers);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 
-app.get('/api/tasks/:id', async (req, res) => {
+app.get('/api/projects/:projectId/tasks', async (req, res) => {
+  const { projectId } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(projectId)) {
+    return res.status(400).json({ error: "ID de projet invalide" });
+  }
   try {
-    const task = await Task.findById(req.params.id);
-    if (!task) return res.status(404).json({ error: "Tâche non trouvée" });
-    res.json(task);
+    const tasks = await Task.find({ projectId }).sort({ createdAt: -1 });
+    res.json(tasks);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: "Erreur serveur" });
   }
 });
 
 app.post('/api/tasks', async (req, res) => {
   try {
-    const { title, description, startDate, endDate, assignee, teamMembers } = req.body;
-
-    if (!title || !description || !startDate || !endDate || !assignee) {
+    const { title, description, startDate, endDate, assignee, teamMembers, projectId } = req.body;
+    if (!title || !description || !startDate || !endDate || !assignee || !projectId) {
       return res.status(400).json({ error: "Champs obligatoires manquants." });
     }
+    if (!mongoose.Types.ObjectId.isValid(projectId)) {
+      return res.status(400).json({ error: "ID de projet invalide" });
+    }
+    const projectExists = await Project.findById(projectId);
+    if (!projectExists) return res.status(404).json({ error: "Projet non trouvé" });
 
     const start = new Date(startDate);
     const end = new Date(endDate);
@@ -151,11 +173,9 @@ app.post('/api/tasks', async (req, res) => {
     if (start < today) {
       return res.status(400).json({ error: "La date de début ne peut pas être dans le passé" });
     }
-
     if (end <= start) {
       return res.status(400).json({ error: "La date de fin doit être après la date de début" });
     }
-
     if (teamMembers <= 0) {
       return res.status(400).json({ error: "Le nombre de membres doit être supérieur à 0" });
     }
@@ -168,35 +188,46 @@ app.post('/api/tasks', async (req, res) => {
   }
 });
 
-app.put('/api/tasks/:id', async (req, res) => {
+app.get('/api/tasks/:taskId', async (req, res) => {
+  const { taskId } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(taskId)) {
+    return res.status(400).json({ error: "ID de tâche invalide" });
+  }
   try {
-    const updated = await Task.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
-    if (!updated) return res.status(404).json({ error: "Tâche non trouvée" });
-    res.json(updated);
+    const task = await Task.findById(taskId);
+    if (!task) return res.status(404).json({ error: "Tâche non trouvée" });
+    res.json(task);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(500).json({ error: "Erreur serveur" });
   }
 });
 
-app.delete('/api/tasks/:id', async (req, res) => {
+app.put('/api/tasks/:taskId', async (req, res) => {
+  const { taskId } = req.params;
+  const { status } = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(taskId)) {
+    return res.status(400).json({ error: "ID de tâche invalide" });
+  }
+
   try {
-    const deleted = await Task.findByIdAndDelete(req.params.id);
-    if (!deleted) return res.status(404).json({ error: "Tâche non trouvée" });
-    res.json({ message: "Tâche supprimée avec succès" });
+    const updatedTask = await Task.findByIdAndUpdate(
+      taskId,
+      { status },
+      { new: true } // ← pour retourner la tâche mise à jour
+    );
+    if (!updatedTask) return res.status(404).json({ error: "Tâche non trouvée" });
+    res.json(updatedTask);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: "Erreur serveur" });
   }
 });
 
-//
-// ─── SERVIR LE FRONTEND ─────────────────────────────────────────
-//
+
+// SERVE FRONTEND STATIC FILES
 app.use(express.static(path.join(__dirname, '../front/dist')));
 
-// ✔️ Correction compatible avec Node.js 20.x et Express
+// Fallback pour React Router — renvoyer index.html sauf pour les routes /api
 app.use((req, res, next) => {
   if (req.method === "GET" && !req.path.startsWith("/api")) {
     res.sendFile(path.join(__dirname, '../front/dist/index.html'));
@@ -205,11 +236,14 @@ app.use((req, res, next) => {
   }
 });
 
-//
-// ─── LANCEMENT DU SERVEUR ───────────────────────────────────────
-//
-const PORT = 5000;
-app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
-  console.log(`📡 Projets: /api/projects | Tâches: /api/tasks`);
-});
+// Connexion MongoDB & lancement serveur
+mongoose.connect('mongodb://localhost:27017/projectdb')
+  .then(() => {
+    console.log("✅ Connecté à MongoDB");
+    app.listen(PORT, () => {
+      console.log(`✅ Server running on http://localhost:${PORT}`);
+    });
+  })
+  .catch(err => {
+    console.error("❌ Erreur de connexion MongoDB :", err);
+  });

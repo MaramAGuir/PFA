@@ -174,3 +174,13 @@
   font-size: 13px;
   color: #475569;
 }
+.description-box {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 10px 0;
+  background-color: #fafafa;
+  border-radius: 5px;
+  white-space: pre-wrap; /* garde les retours à la ligne */
+  max-height: 80px; /* optionnel, limiter la hauteur */
+  overflow-y: auto;
+}
