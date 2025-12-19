@@ -40,7 +40,7 @@ import Profile from "./pages/Profile";
 import Inbox from "./pages/Inbox";
 import Settings from "./pages/Settings";
 import ProjectDetail from "./pages/ProjectDetail";
-import LoginForm from "./pages/loginForm";
+import LoginForm from "./pages/LoginForm";
 import SignupForm from "./pages/signupForm";
 import CreateProjectModal from './pages/CreateProjectModal';
 import DetailsTask from './pages/DetailsTask';

@@ -1,7 +1,5 @@
 import './loginForm.css';
 import { useNavigate, Link } from 'react-router-dom';
-import logo from '../assets/logo.png';
-
 
 
 function LoginForm() {
@@ -17,9 +15,7 @@ function LoginForm() {
   return (
     
     <div className="login-page">
-      <div className="login-header">
-        <img src={logo} alt="Proxym Logo" className="proxym-logo" />
-      </div>
+      
 
       <div className="login-box">
         <h2>Welcome !</h2>

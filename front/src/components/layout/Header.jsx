@@ -12,7 +12,7 @@ function Header({ onLogoutClick }) {
   const navigate = useNavigate();
 
   const user = {
-    name: "Maram Aguir",
+    name: "Yassmine Sahli",
     role: "Chef de projet"
   };
 
